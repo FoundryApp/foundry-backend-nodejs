@@ -15,7 +15,7 @@ class FirestoreCollection {
   }
 
   copyFromProdByCount(count: runtime.firestore.DocCount) {
-    return runtime.firestore.sendAddFirestoreProdDocByCount(this.#collection, count);
+    return runtime.firestore.sendAddFirestoreProdDocsByCount(this.#collection, count);
   }
 }
 

@@ -26,7 +26,7 @@ export function sendAddFirestoreProdDocsById(collection: string, ids: Array<DocI
   });
 }
 
-export function sendAddFirestoreProdDocByCount(collection: string, count: DocCount) {
+export function sendAddFirestoreProdDocsByCount(collection: string, count: DocCount) {
   send({
     firestore: {
       collection,
