@@ -13,7 +13,7 @@ export function sendHttpsCallableInfo(name: string, userId: string, payload: Obj
   return send({
     functions: {
       name,
-      userId,
+      asUser: { id: userId },
       payload,
     }
   });
