@@ -4,7 +4,6 @@ export enum FirestoreTriggers {
   OnCreate = "onCreate",
   OnDelete = "onDelete",
   OnUpdate = "onUpdate",
-  OnWrite = "onWrite",
 }
 
 export function registerFirestore(name: string) {
@@ -20,7 +19,7 @@ export function sendFirestoreCreateDocProd(name: string, collection: string, id:
   return send({
     functions: {
       name,
-      type: FirestoreTriggers.OnCreate,
+      trigger: FirestoreTriggers.OnCreate,
       createDoc: {
         getFromProd: {
           collection,
@@ -35,7 +34,7 @@ export function sendFirestoreCreateDoc(name: string, collection: string, id: str
   return send({
     functions: {
       name,
-      type: FirestoreTriggers.OnCreate,
+      trigger: FirestoreTriggers.OnCreate,
       createDoc: {
         collection,
         id,
@@ -50,7 +49,7 @@ export function sendFirestoreDeleteDoc(name: string, collection: string, id: str
   return send({
     functions: {
       name,
-      type: FirestoreTriggers.OnDelete,
+      trigger: FirestoreTriggers.OnDelete,
       deleteDoc: {
         collection,
         id,
@@ -63,7 +62,7 @@ export function sendFirestoreUpdateDoc(name: string, collection: string, id: str
   return send({
     functions: {
       name,
-      type: FirestoreTriggers.OnUpdate,
+      trigger: FirestoreTriggers.OnUpdate,
       updateDoc: {
         collection,
         id,

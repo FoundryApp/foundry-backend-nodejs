@@ -5,7 +5,7 @@ export function registerHttpsCallable(name: string) {
     functions: {
       name,
       type: FunctionType.HttpsCallable,
-    }
+    },
   });
 }
 
@@ -15,6 +15,6 @@ export function sendHttpsCallableInfo(name: string, userId: string, payload: Obj
       name,
       asUser: { id: userId },
       payload,
-    }
+    },
   });
 }

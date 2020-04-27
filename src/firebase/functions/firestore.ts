@@ -18,13 +18,8 @@ class DocWrapper {
       case runtime.FirestoreTriggers.OnCreate:
         runtime.sendFirestoreCreateDoc(this.#name, this.#col, this.#docId, d);
         break;
-      case runtime.FirestoreTriggers.OnDelete:
-        runtime.sendFirestoreDeleteDoc(this.#name, this.#col, this.#docId);
-        break;
       case runtime.FirestoreTriggers.OnUpdate:
         runtime.sendFirestoreUpdateDoc(this.#name, this.#col, this.#docId, d);
-        break;
-      case runtime.FirestoreTriggers.OnWrite:
         break;
     }
   }
