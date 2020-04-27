@@ -10,11 +10,11 @@ class FirestoreCollection {
     return runtime.firestore.sendAddFirestoreInlineDocs(this.#collection, docs);
   }
 
-  copyFromProdById(docIds: Array<runtime.firestore.DocId>) {
+  copyDocsFromProdById(docIds: Array<runtime.firestore.DocId>) {
     return runtime.firestore.sendAddFirestoreProdDocsById(this.#collection, docIds);
   }
 
-  copyFromProdByCount(count: runtime.firestore.DocCount) {
+  copyDocsFromProdByCount(count: runtime.firestore.DocCount) {
     return runtime.firestore.sendAddFirestoreProdDocsByCount(this.#collection, count);
   }
 }

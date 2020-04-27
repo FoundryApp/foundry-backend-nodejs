@@ -5,6 +5,7 @@
 
 export * as functions from './functions';
 export * as firestore from './firestore';
+export * as database from './database';
 export * as auth from './auth';
 
 export { getConfig, clearConfig } from './shared';

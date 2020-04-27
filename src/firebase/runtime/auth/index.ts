@@ -4,18 +4,18 @@ export type UserId = string;
 export type UserCount = number;
 
 export interface InlineUser {
-  id: string;
+  id: UserId;
   data: Object;
 }
 
 export function sendAddAuthInlineUsers(users: Array<InlineUser>) {
-  send({
+  return send({
     users,
   });
 }
 
 export function sendAddAuthProdUsersById(ids: Array<UserId>) {
-  send({
+  return send({
     users: {
       getFromProd: ids,
     },
@@ -23,7 +23,7 @@ export function sendAddAuthProdUsersById(ids: Array<UserId>) {
 }
 
 export function sendAddAuthProdUsersByCount(count: UserCount) {
-  send({
+  return send({
     users: {
       getFromProd: count,
     },

@@ -4,12 +4,12 @@ export type DocId = string;
 export type DocCount = number;
 
 export interface InlineDoc {
-  id: string;
+  id: DocId;
   data: Object;
 }
 
 export function sendAddFirestoreInlineDocs(collection: string, docs: Array<InlineDoc>) {
-  send({
+  return send({
     firestore: {
       collection,
       docs,
@@ -18,7 +18,7 @@ export function sendAddFirestoreInlineDocs(collection: string, docs: Array<Inlin
 }
 
 export function sendAddFirestoreProdDocsById(collection: string, ids: Array<DocId>) {
-  send({
+  return send({
     firestore: {
       collection,
       docs: [{ getFromProd: ids }],
@@ -27,7 +27,7 @@ export function sendAddFirestoreProdDocsById(collection: string, ids: Array<DocI
 }
 
 export function sendAddFirestoreProdDocsByCount(collection: string, count: DocCount) {
-  send({
+  return send({
     firestore: {
       collection,
       docs: [{ getFromProd: count }],
