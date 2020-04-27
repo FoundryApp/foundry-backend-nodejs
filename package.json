@@ -1,5 +1,5 @@
 {
-  "name": "foundry-nodejs",
+  "name": "foundry-backend-nodejs",
   "version": "1.0.0",
   "description": "",
   "types": "dist/index.d.ts",
