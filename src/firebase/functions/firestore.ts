@@ -1,62 +1,36 @@
 import * as runtime from '../runtime';
 
-class DocWrapper {
-  #name: string;
-  #col: string;
-  #docId: string;
-  #trigger: runtime.FirestoreTriggers;
-
-  constructor(name: string, col: string, docId: string, trigger: runtime.FirestoreTriggers) {
-    this.#name = name;
-    this.#col = col;
-    this.#docId = docId;
-    this.#trigger = trigger;
-  }
-
-  withData(d: Object) {
-    switch (this.#trigger) {
-      case runtime.FirestoreTriggers.OnCreate:
-        runtime.sendFirestoreCreateDoc(this.#name, this.#col, this.#docId, d);
-        break;
-      case runtime.FirestoreTriggers.OnUpdate:
-        runtime.sendFirestoreUpdateDoc(this.#name, this.#col, this.#docId, d);
-        break;
-    }
-  }
-}
-
 class FirestoreFunction {
   #name: string;
   constructor(name: string) { this.#name = name; }
 
   triggerWithProdDoc(col: string, id: string) {
-    return runtime.sendFirestoreCreateDocProd(this.#name, col, id);
+    return runtime.functions.sendFirestoreCreateDocProd(this.#name, col, id);
   }
 
   createDoc(col: string, id: string) {
-    return new DocWrapper(this.#name, col, id, runtime.FirestoreTriggers.OnCreate);
+    return { withData: (d: Object) => runtime.functions.sendFirestoreCreateDoc(this.#name, col, id, d) }
   }
 
   deleteDoc(col: string, id: string) {
-    return runtime.sendFirestoreDeleteDoc(this.#name, col, id);
+    return runtime.functions.sendFirestoreDeleteDoc(this.#name, col, id);
   }
 
   updateDoc(col: string, id: string) {
-    return new DocWrapper(this.#name, col, id, runtime.FirestoreTriggers.OnUpdate);
+    return { withData: (d: Object) => runtime.functions.sendFirestoreUpdateDoc(this.#name, col, id, d) }
   }
 
   writeDoc(col: string, id: string) {
     return {
-      createWithData: (d: Object) => runtime.sendFirestoreCreateDoc(this.#name, col, id, d),
-      updateWithData: (d: Object) => runtime.sendFirestoreUpdateDoc(this.#name, col, id, d),
-      delete: () => runtime.sendFirestoreDeleteDoc(this.#name, col, id),
+      createWithData: (d: Object) => runtime.functions.sendFirestoreCreateDoc(this.#name, col, id, d),
+      updateWithData: (d: Object) => runtime.functions.sendFirestoreUpdateDoc(this.#name, col, id, d),
+      delete: () => runtime.functions.sendFirestoreDeleteDoc(this.#name, col, id),
     }
   }
-
 }
 
 function add(name: string) {
-  return runtime.registerFirestore(name);
+  return runtime.functions.registerFirestore(name);
 }
 
 function firestore(name: string) {

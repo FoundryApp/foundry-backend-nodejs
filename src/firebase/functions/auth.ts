@@ -10,7 +10,7 @@ class UserWrapper {
   }
 
   withData(d: Object) {
-    return runtime.sendAuthCreateUserInfo(this.#name, this.#userId, d);
+    return runtime.functions.sendAuthCreateUserInfo(this.#name, this.#userId, d);
   }
 }
 
@@ -23,16 +23,16 @@ class AuthFunction {
   }
 
   deleteUser(userId: string) {
-    return runtime.sendAuthDeleteUserInfo(this.#name, userId);
+    return runtime.functions.sendAuthDeleteUserInfo(this.#name, userId);
   }
 
   triggerWithProdUser(userId: string) {
-    return runtime.sendAuthCreateUserInfo(this.#name, userId);
+    return runtime.functions.sendAuthCreateUserInfo(this.#name, userId);
   }
 }
 
 function add(name: string) {
-  return runtime.registerAuth(name);
+  return runtime.functions.registerAuth(name);
 }
 
 function auth(name: string) {

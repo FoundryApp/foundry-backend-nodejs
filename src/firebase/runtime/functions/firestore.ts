@@ -1,4 +1,4 @@
-import { send, FunctionType } from './shared';
+import { send, FunctionType } from '../shared';
 
 export enum FirestoreTriggers {
   OnCreate = "onCreate",

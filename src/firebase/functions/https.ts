@@ -20,7 +20,7 @@ class PayloadWrapper {
   }
 
   withPayload(p: Object) {
-    return runtime.sendHttpsInfo(this.#name, this.#method, this.#route, p);
+    return runtime.functions.sendHttpsInfo(this.#name, this.#method, this.#route, p);
   }
 }
 
@@ -50,8 +50,8 @@ class HttpsFunction {
   }
 }
 
-async function add(name: string) {
-  return runtime.registerHttps(name);
+function add(name: string) {
+  return runtime.functions.registerHttps(name);
 }
 
 function https(name: string) {

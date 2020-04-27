@@ -10,7 +10,7 @@ class PayloadWrapper {
   }
 
   withPayload(p: Object) {
-    return runtime.sendHttpsCallableInfo(this.#name, this.#userId, p);
+    return runtime.functions.sendHttpsCallableInfo(this.#name, this.#userId, p);
   }
 }
 
@@ -25,7 +25,7 @@ class HttpsCallableFunction {
 }
 
 function add(name: string) {
-  return runtime.registerHttpsCallable(name)
+  return runtime.functions.registerHttpsCallable(name)
 }
 
 function httpsCallable(name: string) {

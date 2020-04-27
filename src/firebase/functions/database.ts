@@ -5,32 +5,32 @@ class DatabaseFunction {
   constructor(name: string) { this.#name = name; }
 
   triggerWithProdRef(ref: string) {
-    return runtime.sendDatabaseCreateProd(this.#name, ref);
+    return runtime.functions.sendDatabaseCreateProd(this.#name, ref);
   }
 
   createRef(ref: string) {
-    return { withData: (d: Object) => runtime.sendDatabaseCreateRef(this.#name, ref, d) }
+    return { withData: (d: Object) => runtime.functions.sendDatabaseCreateRef(this.#name, ref, d) }
   }
 
   deleteRef(ref: string) {
-    return runtime.sendDatabaseDeleteRef(this.#name, ref);
+    return runtime.functions.sendDatabaseDeleteRef(this.#name, ref);
   }
 
   updateRef(ref: string) {
-    return { withData: (d: Object) => runtime.sendDatabaseUpdateRef(this.#name, ref, d) }
+    return { withData: (d: Object) => runtime.functions.sendDatabaseUpdateRef(this.#name, ref, d) }
   }
 
   writeRef(ref: string) {
     return {
-      createWithData: (d: Object) => runtime.sendDatabaseCreateRef(this.#name, ref, d),
-      updateWithData: (d: Object) => runtime.sendDatabaseUpdateRef(this.#name, ref, d),
-      delete: () => runtime.sendDatabaseDeleteRef(this.#name, ref),
+      createWithData: (d: Object) => runtime.functions.sendDatabaseCreateRef(this.#name, ref, d),
+      updateWithData: (d: Object) => runtime.functions.sendDatabaseUpdateRef(this.#name, ref, d),
+      delete: () => runtime.functions.sendDatabaseDeleteRef(this.#name, ref),
     }
   }
 }
 
 function add(name: string) {
-  return runtime.registerDatabase(name);
+  return runtime.functions.registerDatabase(name);
 }
 
 function database(name: string) {
