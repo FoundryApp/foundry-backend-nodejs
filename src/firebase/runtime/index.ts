@@ -8,4 +8,4 @@ export * from './httpsCallable';
 export * from './auth';
 export * from './firestore';
 
-export { getConfig } from './shared';
+export { getConfig, clearConfig } from './shared';

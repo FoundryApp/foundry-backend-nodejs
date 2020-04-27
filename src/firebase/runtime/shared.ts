@@ -1,6 +1,6 @@
 import * as http from 'http';
 
-const config: any[] = [];
+let config: any[] = [];
 
 export enum FunctionType {
   Https = "https",
@@ -10,13 +10,16 @@ export enum FunctionType {
   RealtimeDB = "realtimeDb",
 }
 
-
 export function send(payload: any) {
   config.push(payload);
 }
 
 export function getConfig() {
   return config;
+}
+
+export function clearConfig() {
+  config = [];
 }
 
 // export function send(payload: any): Promise<any> {

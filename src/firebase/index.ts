@@ -1,5 +1,5 @@
 import * as functions from './functions';
-export { getConfig } from './runtime';
+export { getConfig, clearConfig } from './runtime';
 
 export {
   functions,
