@@ -30,17 +30,16 @@ function send(payload: any): Promise<any> {
     };
 
     const req = http.request(opts, (res) => {
-      console.log(`STATUS: ${res.statusCode}`);
-      console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+      // console.log(`STATUS: ${res.statusCode}`);
+      // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
 
 
       res.setEncoding('utf8');
 
       res.on('data', (chunk) => {
-        console.log(`BODY: ${chunk}`);
+        // console.log(`BODY: ${chunk}`);
       });
       res.on('end', () => {
-        console.log('No more data in response.');
         return resolve();
       });
     });
@@ -55,17 +54,35 @@ function send(payload: any): Promise<any> {
   });
 }
 
-export async function registerHttpsFunction(name: string, type: FunctionType) {
-  await send({
+export function registerHttps(name: string) {
+  return send({
     functions: {
       name,
-      type,
+      type: FunctionType.Https,
     }
   });
 }
 
-export async function sendHttpsInfo(name: string, method: string, route: string, payload: Object) {
-  await send({
+export function registerHttpsCallable(name: string) {
+  return send({
+    functions: {
+      name,
+      type: FunctionType.HttpsCallable,
+    }
+  });
+}
+
+export function registerAuth(name: string) {
+  return send({
+    functions: {
+      name,
+      type: FunctionType.Auth,
+    }
+  });
+}
+
+export function sendHttpsInfo(name: string, method: string, route: string, payload: Object) {
+  return send({
     functions: {
       name,
       method,
@@ -74,3 +91,30 @@ export async function sendHttpsInfo(name: string, method: string, route: string,
     }
   });
 }
+
+export function sendHttpsCallableInfo(name: string, userId: string, payload: Object) {
+  return send({
+    functions: {
+      name,
+      userId,
+      payload,
+    }
+  });
+}
+
+export function sendAuthInfo(name: string, userId: string, data?: Object) {
+  let obj;
+  if (data) {
+    obj = { id: userId, data }
+  } else {
+    obj = { getFromProd: { id: userId } }
+  }
+
+  return send({
+    functions: {
+      name,
+      createUser: obj,
+    },
+  })
+}
+

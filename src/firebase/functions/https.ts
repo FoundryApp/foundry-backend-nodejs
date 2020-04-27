@@ -19,9 +19,8 @@ class PayloadWrapper {
     this.#route = route;
   }
 
-  async withPayload(p: Object) {
-    // Send to runtime    
-    await runtime.sendHttpsInfo(this.#name, this.#method, this.#route, p);
+  withPayload(p: Object) {
+    return runtime.sendHttpsInfo(this.#name, this.#method, this.#route, p);
   }
 }
 
@@ -52,7 +51,7 @@ class HttpsFunction {
 }
 
 async function add(name: string) {
-  await runtime.registerHttpsFunction(name, runtime.FunctionType.Https);
+  return runtime.registerHttps(name);
 }
 
 function https(name: string) {

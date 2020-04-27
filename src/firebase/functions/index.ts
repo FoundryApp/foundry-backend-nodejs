@@ -22,8 +22,12 @@
 
 
 import https from './https';
+import httpsCallable from './httpsCallable';
+import auth from './auth';
 
 export {
   https,
+  httpsCallable,
+  auth,
 };
 
