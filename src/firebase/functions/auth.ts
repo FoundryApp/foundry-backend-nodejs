@@ -16,7 +16,6 @@ class UserWrapper {
 
 class AuthFunction {
   #name: string;
-
   constructor(name: string) { this.#name = name; }
 
   createUser(userId: string) {
