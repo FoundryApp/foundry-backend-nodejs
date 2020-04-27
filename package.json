@@ -18,11 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^13.13.4",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
-    "firebase-admin": "^8.11.0",
-    "firebase-functions": "^3.6.1",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"
   }

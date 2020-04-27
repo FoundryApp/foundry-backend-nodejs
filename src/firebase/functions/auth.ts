@@ -10,8 +10,7 @@ class UserWrapper {
   }
 
   withData(d: Object) {
-    // TODO: send with runtime
-    return runtime.sendAuthInfo(this.#name, this.#userId, d);
+    return runtime.sendAuthCreateUserInfo(this.#name, this.#userId, d);
   }
 }
 
@@ -24,8 +23,12 @@ class AuthFunction {
     return new UserWrapper(this.#name, userId);
   }
 
+  deleteUser(userId: string) {
+    return runtime.sendAuthDeleteUserInfo(this.#name, userId);
+  }
+
   triggerWithProdUser(userId: string) {
-    return runtime.sendAuthInfo(this.#name, userId);
+    return runtime.sendAuthCreateUserInfo(this.#name, userId);
   }
 }
 

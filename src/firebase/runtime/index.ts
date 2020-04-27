@@ -13,6 +13,7 @@ export enum FunctionType {
   RealtimeDB = "realtimeDb",
 }
 
+
 function send(payload: any): Promise<any> {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify(payload);
@@ -29,22 +30,22 @@ function send(payload: any): Promise<any> {
       },
     };
 
-    const req = http.request(opts, (res) => {
+    const req = http.request(opts, (res: any) => {
       // console.log(`STATUS: ${res.statusCode}`);
       // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
 
 
       res.setEncoding('utf8');
 
-      res.on('data', (chunk) => {
-        // console.log(`BODY: ${chunk}`);
+      res.on('data', () => {
+        // TODO: ?        
       });
       res.on('end', () => {
         return resolve();
       });
     });
 
-    req.on('error', (error) => {
+    req.on('error', (error: any) => {
       console.error(error);
       return reject(error);
     });
@@ -54,29 +55,13 @@ function send(payload: any): Promise<any> {
   });
 }
 
+///////////// Https function
+
 export function registerHttps(name: string) {
   return send({
     functions: {
       name,
       type: FunctionType.Https,
-    }
-  });
-}
-
-export function registerHttpsCallable(name: string) {
-  return send({
-    functions: {
-      name,
-      type: FunctionType.HttpsCallable,
-    }
-  });
-}
-
-export function registerAuth(name: string) {
-  return send({
-    functions: {
-      name,
-      type: FunctionType.Auth,
     }
   });
 }
@@ -92,6 +77,17 @@ export function sendHttpsInfo(name: string, method: string, route: string, paylo
   });
 }
 
+///////////// HttpsCallable function
+
+export function registerHttpsCallable(name: string) {
+  return send({
+    functions: {
+      name,
+      type: FunctionType.HttpsCallable,
+    }
+  });
+}
+
 export function sendHttpsCallableInfo(name: string, userId: string, payload: Object) {
   return send({
     functions: {
@@ -102,7 +98,23 @@ export function sendHttpsCallableInfo(name: string, userId: string, payload: Obj
   });
 }
 
-export function sendAuthInfo(name: string, userId: string, data?: Object) {
+///////////// Auth function
+
+export enum AuthTriggers {
+  OnCreate = "onCreate",
+  OnDelete = "onDelete",
+}
+
+export function registerAuth(name: string) {
+  return send({
+    functions: {
+      name,
+      type: FunctionType.Auth,
+    }
+  });
+}
+
+export function sendAuthCreateUserInfo(name: string, userId: string, data?: Object) {
   let obj;
   if (data) {
     obj = { id: userId, data }
@@ -113,8 +125,37 @@ export function sendAuthInfo(name: string, userId: string, data?: Object) {
   return send({
     functions: {
       name,
+      trigger: AuthTriggers.OnCreate,
       createUser: obj,
     },
   })
 }
 
+export function sendAuthDeleteUserInfo(name: string, userId: string) {
+  return send({
+    functions: {
+      name,
+      trigger: AuthTriggers.OnDelete,
+      deleteUser: { id: userId },
+    },
+  });
+}
+
+
+///////////// Firestore function
+
+export enum FirestoreTriggers {
+  OnCreate = "onCreate",
+  OnDelete = "onDelete",
+  OnUpdate = "onUpdate",
+  OnWrite = "onWrite",
+}
+
+export function registerFirestore(name: string) {
+  return send({
+    functions: {
+      name,
+      type: FunctionType.Firestore,
+    },
+  });
+}
