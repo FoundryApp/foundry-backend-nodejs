@@ -17,11 +17,12 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "source-map-support": "^0.5.19"
+  },
   "devDependencies": {
     "firebase-admin": "^8.11.0",
     "firebase-functions": "^3.6.1",
-    "source-map-support": "^0.5.19",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"
   }
