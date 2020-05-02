@@ -1,5 +1,5 @@
 {
-  "name": "@foundry/foundry-backend-nodejs",
+  "name": "@foundryapp/foundry-backend",
   "version": "1.0.0",
   "description": "Foundry Node.js SDK",
   "license": "MPL-2.0",
