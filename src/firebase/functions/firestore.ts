@@ -19,14 +19,6 @@ class FirestoreFunction {
   updateDoc(col: string, id: string) {
     return { withData: (d: Object) => runtime.functions.sendFirestoreUpdateDoc(this.#name, col, id, d) }
   }
-
-  writeDoc(col: string, id: string) {
-    return {
-      createWithData: (d: Object) => runtime.functions.sendFirestoreCreateDoc(this.#name, col, id, d),
-      updateWithData: (d: Object) => runtime.functions.sendFirestoreUpdateDoc(this.#name, col, id, d),
-      delete: () => runtime.functions.sendFirestoreDeleteDoc(this.#name, col, id),
-    }
-  }
 }
 
 function add(name: string) {
