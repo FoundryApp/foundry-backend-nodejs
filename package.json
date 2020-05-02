@@ -1,22 +1,24 @@
 {
-  "name": "foundry-backend-nodejs",
+  "name": "@foundry/foundry-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Foundry Node.js SDK",
+  "license": "MPL-2.0",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": "10"
+  },
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/foundryapp/backend-sdk/foundry-backend-nodejs.git"
+    "url": "https://github.com/FoundryApp/foundry-backend-nodejs.git"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "source-map-support": "^0.5.19"
   },
