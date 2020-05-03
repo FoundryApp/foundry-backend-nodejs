@@ -1,5 +1,5 @@
 import * as runtime from '../runtime';
-import { registerFunction, getRegisteredFunction, FirebaseBackgroundFunction } from './firebaseFunction';
+import { registerFunction, getRegisteredFunction, FirebaseBackgroundFunction } from '../shared';
 
 interface DatabaseReference {
   refPath: string;

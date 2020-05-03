@@ -1,4 +1,4 @@
-import { send } from '../shared';
+import { send } from '../../shared';
 
 export type ChildKey = string;
 

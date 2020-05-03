@@ -1,5 +1,5 @@
 import * as runtime from '../runtime';
-import { registerFunction, getRegisteredFunction, FirebaseHttpsFunction } from './firebaseFunction';
+import { registerFunction, getRegisteredFunction, FirebaseHttpsFunction } from '../shared';
 
 interface HttpsCallablePayload {
   data: Object;

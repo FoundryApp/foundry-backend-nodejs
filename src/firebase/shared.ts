@@ -1,6 +1,7 @@
-type FirebaseFunction = FirebaseBackgroundFunction | FirebaseHttpsFunction;
-
+let config: any[] = [];
 let registered: { [name: string]: FirebaseFunction } = {};
+
+type FirebaseFunction = FirebaseBackgroundFunction | FirebaseHttpsFunction;
 
 export function registerFunction(name: string, func: FirebaseFunction) {
   if (registered[name]) {
@@ -29,4 +30,26 @@ export abstract class FirebaseHttpsFunction {
   constructor(name: string) { this.name = name; }
 
   abstract trigger(): void;
+}
+
+
+export enum FunctionType {
+  Https = "https",
+  HttpsCallable = "httpsCallable",
+  Auth = "auth",
+  Firestore = "firestore",
+  RealtimeDB = "realtimeDB",
+}
+
+export function send(payload: any) {
+  config.push(payload);
+}
+
+export function getConfig() {
+  return config;
+}
+
+export function clearConfig() {
+  config = [];
+  registered = {};
 }
