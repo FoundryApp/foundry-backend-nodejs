@@ -16,16 +16,16 @@ export function sendAddAuthInlineUsers(users: Array<InlineUser>) {
 
 export function sendAddAuthProdUsersById(ids: Array<UserId>) {
   return send({
-    users: {
+    users: [{
       getFromProd: ids,
-    },
+    }],
   });
 }
 
 export function sendAddAuthProdUsersByCount(count: UserCount) {
   return send({
-    users: {
+    users: [{
       getFromProd: count,
-    },
+    }],
   });
 }
