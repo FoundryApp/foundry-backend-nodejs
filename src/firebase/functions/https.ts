@@ -10,8 +10,8 @@ enum HttpsMethod {
   Options = "OPTIONS",
 }
 
-interface HttpsPayload {
-  route: string;
+interface HttpsConfig {
+  route?: string;
   data: Object;
 }
 class HttpsFunction extends FirebaseHttpsFunction {
@@ -19,24 +19,24 @@ class HttpsFunction extends FirebaseHttpsFunction {
 
   trigger() {
     return {
-      get: (payload: HttpsPayload) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Get, payload.route, payload.data);
+      get: (payload: HttpsConfig) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Get, payload.data, payload.route);
       },
 
-      post: (payload: HttpsPayload) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Post, payload.route, payload.data);
+      post: (payload: HttpsConfig) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Post, payload.data, payload.route);
       },
 
-      put: (payload: HttpsPayload) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Put, payload.route, payload.data);
+      put: (payload: HttpsConfig) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Put, payload.data, payload.route);
       },
 
-      delete: (payload: HttpsPayload) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Delete, payload.route, payload.data);
+      delete: (payload: HttpsConfig) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Delete, payload.data, payload.route);
       },
 
-      options: (payload: HttpsPayload) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Options, payload.route, payload.data);
+      options: (payload: HttpsConfig) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Options, payload.data, payload.route);
       },
     };
   }

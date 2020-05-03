@@ -9,7 +9,7 @@ export function registerHttps(name: string) {
   });
 }
 
-export function sendHttpsInfo(name: string, method: string, route: string, payload: Object) {
+export function sendHttpsInfo(name: string, method: string, payload: Object, route?: string) {
   return send({
     functions: {
       name,

@@ -10,7 +10,7 @@ class HttpsCallableFunction extends FirebaseHttpsFunction {
 
   trigger() {
     return {
-      onRequest: (payload: HttpsCallablePayload) => {
+      onCall: (payload: HttpsCallablePayload) => {
         return runtime.functions.sendHttpsCallableInfo(this.name, payload.data)
       },
     };
@@ -18,7 +18,7 @@ class HttpsCallableFunction extends FirebaseHttpsFunction {
 
   triggerAsUser(userId: string) {
     return {
-      onRequest: (payload: HttpsCallablePayload) => {
+      onCall: (payload: HttpsCallablePayload) => {
         return runtime.functions.sendHttpsCallableInfoAsUser(this.name, userId, payload.data)
       },
     };
