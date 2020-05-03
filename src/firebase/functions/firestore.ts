@@ -1,33 +1,46 @@
 import * as runtime from '../runtime';
+import { registerFunction, getRegisteredFunction, FirebaseBackgroundFunction } from './firebaseFunction';
 
-class FirestoreFunction {
-  #name: string;
-  constructor(name: string) { this.#name = name; }
+interface FirestoreDocument {
+  collection: string;
+  id: string;
+  data: Object;
+}
 
-  triggerWithProdDoc(col: string, id: string) {
-    return runtime.functions.sendFirestoreCreateDocProd(this.#name, col, id);
+class FirestoreFunction extends FirebaseBackgroundFunction {
+  constructor(name: string) { super(name); }
+
+  triggerWithProdData() {
+    return {
+      onCreate: (collection: string, documentId: string) => {
+        return runtime.functions.sendFirestoreCreateDocProd(this.name, collection, documentId);
+      },
+    };
   }
 
-  createDoc(col: string, id: string) {
-    return { withData: (d: Object) => runtime.functions.sendFirestoreCreateDoc(this.#name, col, id, d) }
-  }
-
-  deleteDoc(col: string, id: string) {
-    return runtime.functions.sendFirestoreDeleteDoc(this.#name, col, id);
-  }
-
-  updateDoc(col: string, id: string) {
-    return { withData: (d: Object) => runtime.functions.sendFirestoreUpdateDoc(this.#name, col, id, d) }
+  trigger() {
+    return {
+      onCreate: (doc: FirestoreDocument) => {
+        return runtime.functions.sendFirestoreCreateDoc(this.name, doc.collection, doc.id, doc.data);
+      },
+      onDelete: (collection: string, documentId: string) => {
+        return runtime.functions.sendFirestoreDeleteDoc(this.name, collection, documentId);
+      },
+      onUpdate: (doc: FirestoreDocument) => {
+        runtime.functions.sendFirestoreUpdateDoc(this.name, doc.collection, doc.id, doc.data);
+      },
+    };
   }
 }
 
-function add(name: string) {
-  return runtime.functions.registerFirestore(name);
-}
-
-function firestore(name: string) {
-  return new FirestoreFunction(name);
-}
-
-firestore.add = add;
-export default firestore;
+export default {
+  register: (name: string) => {
+    const f = new FirestoreFunction(name);
+    registerFunction(name, f);
+    runtime.functions.registerFirestore(name);
+    return f;
+  },
+  get: (name: string) => {
+    return getRegisteredFunction(name) as FirestoreFunction;
+  },
+};

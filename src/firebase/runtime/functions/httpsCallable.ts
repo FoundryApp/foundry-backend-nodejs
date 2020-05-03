@@ -9,7 +9,16 @@ export function registerHttpsCallable(name: string) {
   });
 }
 
-export function sendHttpsCallableInfo(name: string, userId: string, payload: Object) {
+export function sendHttpsCallableInfo(name: string, payload: Object) {
+  return send({
+    functions: {
+      name,
+      payload,
+    },
+  });
+}
+
+export function sendHttpsCallableInfoAsUser(name: string, userId: string, payload: Object) {
   return send({
     functions: {
       name,

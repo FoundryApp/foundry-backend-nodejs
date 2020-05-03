@@ -1,33 +1,45 @@
 import * as runtime from '../runtime';
+import { registerFunction, getRegisteredFunction, FirebaseBackgroundFunction } from './firebaseFunction';
 
-class DatabaseFunction {
-  #name: string;
-  constructor(name: string) { this.#name = name; }
+interface DatabaseReference {
+  refPath: string;
+  data: Object;
+}
 
-  triggerWithProdRef(ref: string) {
-    return runtime.functions.sendDatabaseCreateProd(this.#name, ref);
+class DatabaseFunction extends FirebaseBackgroundFunction {
+  constructor(name: string) { super(name); }
+
+  triggerWithProdData() {
+    return {
+      onCreate: (refPath: string) => {
+        return runtime.functions.sendDatabaseCreateProd(this.name, refPath);
+      },
+    };
   }
 
-  createRef(ref: string) {
-    return { withData: (d: Object) => runtime.functions.sendDatabaseCreateRef(this.#name, ref, d) }
-  }
-
-  deleteRef(ref: string) {
-    return runtime.functions.sendDatabaseDeleteRef(this.#name, ref);
-  }
-
-  updateRef(ref: string) {
-    return { withData: (d: Object) => runtime.functions.sendDatabaseUpdateRef(this.#name, ref, d) }
+  trigger() {
+    return {
+      onCreate: (ref: DatabaseReference) => {
+        return runtime.functions.sendDatabaseCreateRef(this.name, ref.refPath, ref.data)
+      },
+      onDelete: (refPath: string) => {
+        return runtime.functions.sendDatabaseDeleteRef(this.name, refPath);
+      },
+      onUpdate: (ref: DatabaseReference) => {
+        return runtime.functions.sendDatabaseUpdateRef(this.name, ref.refPath, ref.data);
+      },
+    };
   }
 }
 
-function add(name: string) {
-  return runtime.functions.registerDatabase(name);
-}
-
-function database(name: string) {
-  return new DatabaseFunction(name);
-}
-
-database.add = add;
-export default database;
+export default {
+  register: (name: string) => {
+    const f = new DatabaseFunction(name);
+    registerFunction(name, f);
+    runtime.functions.registerDatabase(name);
+    return f;
+  },
+  get: (name: string) => {
+    return getRegisteredFunction(name) as DatabaseFunction;
+  },
+};

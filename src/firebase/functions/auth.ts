@@ -1,43 +1,42 @@
 import * as runtime from '../runtime';
+import { registerFunction, getRegisteredFunction, FirebaseBackgroundFunction } from './firebaseFunction';
 
-class UserWrapper {
-  #name: string;
-  #userId: string
+interface FirebaseUser {
+  uid: string;
+  data: Object;
+}
 
-  constructor(name: string, userId: string) {
-    this.#name = name;
-    this.#userId = userId;
+class AuthFunction extends FirebaseBackgroundFunction {
+  constructor(name: string) { super(name); }
+
+  triggerWithProdData() {
+    return {
+      onCreate: (userId: string) => {
+        return runtime.functions.sendAuthCreateUserInfo(this.name, userId);
+      },
+    };
   }
 
-  withData(d: Object) {
-    return runtime.functions.sendAuthCreateUserInfo(this.#name, this.#userId, d);
+  trigger() {
+    return {
+      onCreate: (user: FirebaseUser) => {
+        return runtime.functions.sendAuthCreateUserInfo(this.name, user.uid, user.data);
+      },
+      onDelete: (userId: string) => {
+        return runtime.functions.sendAuthDeleteUserInfo(this.name, userId);
+      },
+    };
   }
 }
 
-class AuthFunction {
-  #name: string;
-  constructor(name: string) { this.#name = name; }
-
-  createUser(userId: string) {
-    return new UserWrapper(this.#name, userId);
-  }
-
-  deleteUser(userId: string) {
-    return runtime.functions.sendAuthDeleteUserInfo(this.#name, userId);
-  }
-
-  triggerWithProdUser(userId: string) {
-    return runtime.functions.sendAuthCreateUserInfo(this.#name, userId);
-  }
-}
-
-function add(name: string) {
-  return runtime.functions.registerAuth(name);
-}
-
-function auth(name: string) {
-  return new AuthFunction(name);
-}
-
-auth.add = add;
-export default auth;
+export default {
+  register: (name: string) => {
+    const f = new AuthFunction(name);
+    registerFunction(name, f);
+    runtime.functions.registerAuth(name);
+    return f;
+  },
+  get: (name: string) => {
+    return getRegisteredFunction(name) as AuthFunction;
+  },
+};

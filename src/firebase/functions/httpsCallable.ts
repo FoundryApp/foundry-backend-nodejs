@@ -1,36 +1,39 @@
 import * as runtime from '../runtime';
+import { registerFunction, getRegisteredFunction, FirebaseHttpsFunction } from './firebaseFunction';
 
-class PayloadWrapper {
-  #name: string;
-  #userId: string;
+interface HttpsCallablePayload {
+  data: Object;
+}
 
-  constructor(name: string, userId: string) {
-    this.#name = name;
-    this.#userId = userId;
+class HttpsCallableFunction extends FirebaseHttpsFunction {
+  constructor(name: string) { super(name); }
+
+  trigger() {
+    return {
+      onRequest: (payload: HttpsCallablePayload) => {
+        return runtime.functions.sendHttpsCallableInfo(this.name, payload.data)
+      },
+    };
   }
 
-  withPayload(p: Object) {
-    return runtime.functions.sendHttpsCallableInfo(this.#name, this.#userId, p);
+  triggerAsUser(userId: string) {
+    return {
+      onRequest: (payload: HttpsCallablePayload) => {
+        return runtime.functions.sendHttpsCallableInfoAsUser(this.name, userId, payload.data)
+      },
+    };
   }
 }
 
-class HttpsCallableFunction {
-  #name: string;
+export default {
+  register: (name: string) => {
+    const f = new HttpsCallableFunction(name);
+    registerFunction(name, f);
+    runtime.functions.registerHttpsCallable(name);
+    return f;
+  },
+  get: (name: string) => {
+    return getRegisteredFunction(name) as HttpsCallableFunction;
+  },
+};
 
-  constructor(name: string) { this.#name = name; }
-
-  asUser(userId: string) {
-    return new PayloadWrapper(this.#name, userId);
-  }
-}
-
-function add(name: string) {
-  return runtime.functions.registerHttpsCallable(name)
-}
-
-function httpsCallable(name: string) {
-  return new HttpsCallableFunction(name);
-}
-
-httpsCallable.add = add;
-export default httpsCallable;

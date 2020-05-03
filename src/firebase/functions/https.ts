@@ -1,4 +1,6 @@
 import * as runtime from '../runtime'
+import { registerFunction, getRegisteredFunction, FirebaseHttpsFunction } from './firebaseFunction';
+
 
 enum HttpsMethod {
   Get = "GET",
@@ -8,55 +10,46 @@ enum HttpsMethod {
   Options = "OPTIONS",
 }
 
-class PayloadWrapper {
-  #name: string;
-  #method: HttpsMethod;
-  #route: string;
+interface HttpsPayload {
+  route: string;
+  data: Object;
+}
+class HttpsFunction extends FirebaseHttpsFunction {
+  constructor(name: string) { super(name); }
 
-  constructor(name: string, method: HttpsMethod, route: string) {
-    this.#name = name;
-    this.#method = method;
-    this.#route = route;
-  }
+  trigger() {
+    return {
+      get: (payload: HttpsPayload) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Get, payload.route, payload.data);
+      },
 
-  withPayload(p: Object) {
-    return runtime.functions.sendHttpsInfo(this.#name, this.#method, this.#route, p);
+      post: (payload: HttpsPayload) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Post, payload.route, payload.data);
+      },
+
+      put: (payload: HttpsPayload) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Put, payload.route, payload.data);
+      },
+
+      delete: (payload: HttpsPayload) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Delete, payload.route, payload.data);
+      },
+
+      options: (payload: HttpsPayload) => {
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Options, payload.route, payload.data);
+      },
+    };
   }
 }
 
-class HttpsFunction {
-  #name: string;
-
-  constructor(name: string) { this.#name = name; }
-
-  get(route: string) {
-    return new PayloadWrapper(this.#name, HttpsMethod.Get, route);
-  }
-
-  post(route: string) {
-    return new PayloadWrapper(this.#name, HttpsMethod.Post, route);
-  }
-
-  put(route: string) {
-    return new PayloadWrapper(this.#name, HttpsMethod.Put, route);
-  }
-
-  delete(route: string) {
-    return new PayloadWrapper(this.#name, HttpsMethod.Delete, route);
-  }
-
-  options(route: string) {
-    return new PayloadWrapper(this.#name, HttpsMethod.Options, route);
-  }
-}
-
-function add(name: string) {
-  return runtime.functions.registerHttps(name);
-}
-
-function https(name: string) {
-  return new HttpsFunction(name);
-}
-
-https.add = add;
-export default https;
+export default {
+  register: (name: string) => {
+    const f = new HttpsFunction(name);
+    registerFunction(name, f);
+    runtime.functions.registerHttps(name);
+    return f;
+  },
+  get: (name: string) => {
+    return getRegisteredFunction(name) as HttpsFunction;
+  },
+};

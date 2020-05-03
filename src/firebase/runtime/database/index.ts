@@ -3,7 +3,7 @@ import { send } from '../shared';
 export type ChildKey = string;
 
 export interface InlineChild {
-  child: ChildKey;
+  key: ChildKey;
   data: Object;
 }
 
@@ -11,7 +11,7 @@ export function sendAddDatabaseInlineChildren(ref: string, children: Array<Inlin
   return send({
     realtimeDB: {
       ref,
-      children,
+      children: children.map(c => ({ child: c.key, data: c.data })),
     }
   });
 }
