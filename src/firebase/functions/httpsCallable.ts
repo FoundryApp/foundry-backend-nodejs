@@ -1,25 +1,24 @@
 import * as runtime from '../runtime';
 import { registerFunction, getRegisteredFunction, FirebaseHttpsFunction } from '../shared';
 
-interface HttpsCallablePayload {
-  data: Object;
-}
+
+type HttpsCallablePayload = Object;
 
 class HttpsCallableFunction extends FirebaseHttpsFunction {
   constructor(name: string) { super(name); }
 
   trigger() {
     return {
-      onCall: (payload: HttpsCallablePayload) => {
-        return runtime.functions.sendHttpsCallableInfo(this.name, payload.data)
+      onCall: (payload?: HttpsCallablePayload) => {
+        return runtime.functions.sendHttpsCallableInfo(this.name, payload ?? {})
       },
     };
   }
 
   triggerAsUser(userId: string) {
     return {
-      onCall: (payload: HttpsCallablePayload) => {
-        return runtime.functions.sendHttpsCallableInfoAsUser(this.name, userId, payload.data)
+      onCall: (payload?: HttpsCallablePayload) => {
+        return runtime.functions.sendHttpsCallableInfoAsUser(this.name, userId, payload ?? {})
       },
     };
   }

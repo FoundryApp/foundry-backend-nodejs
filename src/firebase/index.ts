@@ -10,3 +10,7 @@ export {
   database,
   users,
 }
+
+functions.httpsCallable.register('sd').trigger().onCall({
+  asda: 'asdsa'
+});

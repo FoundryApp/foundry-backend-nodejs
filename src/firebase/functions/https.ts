@@ -3,16 +3,16 @@ import { registerFunction, getRegisteredFunction, FirebaseHttpsFunction } from '
 
 
 enum HttpsMethod {
-  Get = "GET",
-  Post = "POST",
-  Put = "PUT",
-  Delete = "DELETE",
-  Options = "OPTIONS",
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Delete = 'DELETE',
+  Options = 'OPTIONS',
 }
 
 interface HttpsConfig {
   route?: string;
-  data: Object;
+  data?: Object;
 }
 class HttpsFunction extends FirebaseHttpsFunction {
   constructor(name: string) { super(name); }
@@ -20,23 +20,23 @@ class HttpsFunction extends FirebaseHttpsFunction {
   trigger() {
     return {
       get: (payload: HttpsConfig) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Get, payload.data, payload.route);
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Get, payload.data ?? {}, payload.route);
       },
 
       post: (payload: HttpsConfig) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Post, payload.data, payload.route);
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Post, payload.data ?? {}, payload.route);
       },
 
       put: (payload: HttpsConfig) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Put, payload.data, payload.route);
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Put, payload.data ?? {}, payload.route);
       },
 
       delete: (payload: HttpsConfig) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Delete, payload.data, payload.route);
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Delete, payload.data ?? {}, payload.route);
       },
 
       options: (payload: HttpsConfig) => {
-        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Options, payload.data, payload.route);
+        return runtime.functions.sendHttpsInfo(this.name, HttpsMethod.Options, payload.data ?? {}, payload.route);
       },
     };
   }
