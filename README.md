@@ -55,9 +55,6 @@ foundry.firestore.collection('posts').addDocs([
 /////////
 
 // Register 'myCloudFunc' with Foundry
-// The name under which your cloud function is registered
-// with Foundry must be the same under which you export
-// your cloud function
 const createPost = foundry.functions.httpsCallable.register('createPost');
 
 // Now specify how Foundry should trigger your function
@@ -190,6 +187,10 @@ foundry.database.ref('posts').copyChildrenFromProdByKey(['prod-key-1', 'prod-key
 
 ### Register function
 ```javascript
+// The name under which your cloud function is registered
+// with Foundry must be the same under which you export
+// your cloud function
+
 const funcFirestore = firebase.functions.firestore.register('funcFirestore');
 const funcDatabase = firebase.functions.database.register('funcDatabase');
 const funcAuth = firebase.functions.auth.register('funcAuth');
