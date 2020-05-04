@@ -1,5 +1,5 @@
 # Foundry Node.js SDK
-This SDK lets you write
+This SDK lets you configure Foundry with your Firebase Cloud Functions
 
 ## Table of contents
 - [Installation](#installation)
